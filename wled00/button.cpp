@@ -324,7 +324,17 @@ void handleButton()
 
       if (b == 0 && dur > WLED_LONG_AP) { // long press on button 0 (when released)
         if (dur > WLED_LONG_FACTORY_RESET) { // factory reset if pressed > 10 seconds
-          WLED_FS.format();
+          #ifndef WLED_SD_CARD
+            WLED_FS.format();
+          #else
+            DEBUG_PRINTLN(F("Reseting SD card..."));
+            if (!SD.remove(getPresetsFileName())) {
+              DEBUG_PRINTLN(F("Failed to delete presets file!"));
+            }
+            BusManager::removeAll();
+            serializeConfig();
+            initPresetsFile();
+          #endif
           #ifdef WLED_ADD_EEPROM_SUPPORT
           clearEEPROM();
           #endif

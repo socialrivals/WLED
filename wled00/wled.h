@@ -47,7 +47,7 @@
 
 //#define WLED_DISABLE_ESPNOW      // Removes dependence on esp now
 
-#define WLED_ENABLE_FS_EDITOR      // enable /edit page for editing FS content. Will also be disabled with OTA lock
+//#define WLED_ENABLE_FS_EDITOR      // enable /edit page for editing FS content. Will also be disabled with OTA lock
 
 // to toggle usb serial debug (un)comment the following line
 //#define WLED_DEBUG
@@ -227,7 +227,17 @@ using PSRAMDynamicJsonDocument = BasicJsonDocument<PSRAM_Allocator>;
 #endif
 
 //Filesystem to use for preset and config files. SPIFFS or LittleFS on ESP8266, SPIFFS only on ESP32 (now using LITTLEFS port by lorol)
-#ifdef ESP8266
+#define WLED_SD_CARD
+#define WLED_SD_CARD_REASSIGN_PINS
+#define WLED_SD_CARD_CS_PIN 16
+#define WLED_SD_CARD_MISO_PIN 36
+#define WLED_SD_CARD_MOSI_PIN 15
+#define WLED_SD_CARD_SCK_PIN 14
+
+#ifdef WLED_SD_CARD
+  #include <SD.h>
+  #define WLED_FS SD
+#elif ESP8266
   #define WLED_FS LittleFS
 #else
   #if LOROL_LITTLEFS
@@ -278,10 +288,10 @@ WLED_GLOBAL char otaPass[33] _INIT(DEFAULT_OTA_PASS);
 
 // Hardware and pin config
 #ifndef BTNPIN
-  #define BTNPIN 0,-1
+  #define BTNPIN -1,-1
 #endif
 #ifndef BTNTYPE
-  #define BTNTYPE BTN_TYPE_PUSH,BTN_TYPE_NONE
+  #define BTNTYPE BTN_TYPE_NONE,BTN_TYPE_NONE
 #endif
 #ifndef RLYPIN
 WLED_GLOBAL int8_t rlyPin _INIT(-1);

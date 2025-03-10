@@ -430,9 +430,12 @@ void WLED::setup()
 
   bool fsinit = false;
   DEBUGFS_PRINTLN(F("Mount FS"));
-#ifdef ARDUINO_ARCH_ESP32
+#if defined(ARDUINO_ARCH_ESP32) && !defined(WLED_SD_CARD)
   fsinit = WLED_FS.begin(true);
-#else
+#elif defined(WLED_SD_CARD) && defined(WLED_SD_CARD_REASSIGN_PINS)
+  SPI.begin(WLED_SD_CARD_SCK_PIN, WLED_SD_CARD_MISO_PIN, WLED_SD_CARD_MOSI_PIN, WLED_SD_CARD_CS_PIN);
+  fsinit = WLED_FS.begin(WLED_SD_CARD_CS_PIN);
+#else 
   fsinit = WLED_FS.begin();
 #endif
   if (!fsinit) {

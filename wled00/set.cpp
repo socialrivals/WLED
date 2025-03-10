@@ -547,7 +547,17 @@ void handleSettingsSet(AsyncWebServerRequest *request, byte subPage)
   {
     if (request->hasArg(F("RS"))) //complete factory reset
     {
-      WLED_FS.format();
+      #ifndef WLED_SD_CARD
+        WLED_FS.format();
+      #else
+        DEBUG_PRINTLN(F("Reseting SD card..."));
+        if (!SD.remove(getPresetsFileName())) {
+          DEBUG_PRINTLN(F("Failed to delete presets file!"));
+        }
+        BusManager::removeAll();
+        serializeConfig();
+        initPresetsFile();
+      #endif
       #ifdef WLED_ADD_EEPROM_SUPPORT
       clearEEPROM();
       #endif

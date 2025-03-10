@@ -23,7 +23,7 @@ def create_release(source):
     if release_name_def:
         release_name = release_name_def.replace("\\\"", "")
         version = _get_cpp_define_value(env, "WLED_VERSION")
-        release_file = os.path.join(OUTPUT_DIR, "release", f"WLED_{version}_{release_name}.bin")
+        release_file = os.path.join(OUTPUT_DIR, "release", f"{release_name}_{version}.bin")
         release_gz_file = release_file + ".gz"
         print(f"Copying {source} to {release_file}")
         shutil.copy(source, release_file)
