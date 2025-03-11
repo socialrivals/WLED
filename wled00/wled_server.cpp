@@ -437,6 +437,11 @@ void initServer()
 #endif
 
   server.on("/", HTTP_GET, [](AsyncWebServerRequest *request) {
+    #if defined(WLED_BASIC_AUTH_USER) && defined(WLED_BASIC_AUTH_PASS)
+      if (!request->authenticate(WLED_BASIC_AUTH_USER, WLED_BASIC_AUTH_PASS)) {
+        return request->requestAuthentication();
+      }
+    #endif  
     if (captivePortal(request)) return;
     if (!showWelcomePage || request->hasArg(F("sliders"))) {
       handleStaticContent(request, F("/index.htm"), 200, FPSTR(CONTENT_TYPE_HTML), PAGE_index, PAGE_index_L);
