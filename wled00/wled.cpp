@@ -450,9 +450,17 @@ void WLED::setup()
   updateFSInfo();
 
   // generate module IDs must be done before AP setup
+#ifdef WLED_USE_ETHERNET
+  escapedMac = ETH.macAddress();
+  escapedMac.replace(":", "");
+  escapedMac.toLowerCase();
+  DEBUG_PRINTF_P(PSTR("initC: ETH MAC %s\n"), escapedMac.c_str());
+#else
   escapedMac = WiFi.macAddress();
   escapedMac.replace(":", "");
   escapedMac.toLowerCase();
+  DEBUG_PRINTF_P(PSTR("initC: WiFi MAC %s\n"), escapedMac.c_str());
+#endif
 
   WLED_SET_AP_SSID(); // otherwise it is empty on first boot until config is saved
   multiWiFi.push_back(WiFiConfig(CLIENT_SSID,CLIENT_PASS)); // initialise vector with default WiFi

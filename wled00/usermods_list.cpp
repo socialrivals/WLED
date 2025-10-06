@@ -242,6 +242,10 @@
 #include "../usermods/LD2410_v2/usermod_ld2410.h"
 #endif
 
+#ifdef USERMOD_BROADCAST_INFO
+  #include "../usermods/broadcast/usermod_v2_broadcast.h"
+#endif
+
 void registerUsermods()
 {
 /*
@@ -469,5 +473,9 @@ void registerUsermods()
 
   #ifdef USERMOD_POV_DISPLAY
   UsermodManager::add(new PovDisplayUsermod());
+  #endif
+
+  #ifdef USERMOD_BROADCAST_INFO
+  UsermodManager::add(new BroadcastInfoUsermod());
   #endif
 }

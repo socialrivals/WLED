@@ -823,7 +823,7 @@ void serializeInfo(JsonObject root)
 
   root[F("brand")] = F(WLED_BRAND);
   root[F("product")] = F(WLED_PRODUCT_NAME);
-  root["mac"] = escapedMac;
+  root["mac"] = Network.localMAC();
   char s[16] = "";
   if (Network.isConnected())
   {

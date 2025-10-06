@@ -71,6 +71,18 @@ void NetworkClass::localMAC(uint8_t* MAC)
   return;
 }
 
+String NetworkClass::localMAC()
+{
+  String escapedMac;
+#if defined(ARDUINO_ARCH_ESP32) && defined(WLED_USE_ETHERNET)
+  escapedMac = ETH.macAddress();
+#else
+  escapedMac = WiFi.macAddress();
+#endif
+  escapedMac.toUpperCase();
+  return escapedMac;
+}
+
 bool NetworkClass::isConnected()
 {
 #if defined(ARDUINO_ARCH_ESP32) && defined(WLED_USE_ETHERNET)
@@ -86,6 +98,23 @@ bool NetworkClass::isEthernet()
   return (ETH.localIP()[0] != 0);
 #endif
   return false;
+}
+
+IPAddress NetworkClass::broadcastIP()
+{
+  IPAddress local = localIP();
+  IPAddress mask = subnetMask();
+
+  if (local[0] == 0) {
+    return INADDR_NONE;  // Not connected
+  }
+
+  IPAddress broadcast;
+  for (int i = 0; i < 4; i++) {
+    broadcast[i] = (local[i] & mask[i]) | (~mask[i] & 255);
+  }
+
+  return broadcast;
 }
 
 NetworkClass Network;
