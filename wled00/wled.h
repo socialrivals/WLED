@@ -968,6 +968,11 @@ WLED_GLOBAL volatile uint8_t jsonBufferLock _INIT(0);
   #define DEBUGOUT Serial
 #endif
 
+#define LOG_PRINT(x) DEBUGOUT.print(x)
+#define LOG_PRINTLN(x) DEBUGOUT.println(x)
+#define LOG_PRINTF(x...) DEBUGOUT.printf(x)
+#define LOG_PRINTF_P(x...) DEBUGOUT.printf_P(x)
+
 #ifdef WLED_DEBUG
   #ifndef ESP8266
   #include <rom/rtc.h>

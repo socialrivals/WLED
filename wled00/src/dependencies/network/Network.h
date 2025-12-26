@@ -12,6 +12,7 @@ class NetworkClass
 {
 public:
   IPAddress localIP();
+  String localIPString();
   IPAddress subnetMask();
   IPAddress gatewayIP();
   IPAddress broadcastIP();

@@ -1014,9 +1014,11 @@ void WLED::handleConnection()
       }
     }
   } else if (!interfacesInited) { //newly connected
-    DEBUG_PRINTLN();
-    DEBUG_PRINT(F("Connected! IP address: "));
-    DEBUG_PRINTLN(Network.localIP());
+    LOG_PRINTLN();
+    LOG_PRINT(F("MAC Address: "));
+    LOG_PRINTLN(Network.localMAC());
+    LOG_PRINT(F("Connected! IP address: "));
+    LOG_PRINTLN(Network.localIPString());
     if (improvActive) {
       if (improvError == 3) sendImprovStateResponse(0x00, true);
       sendImprovStateResponse(0x04);

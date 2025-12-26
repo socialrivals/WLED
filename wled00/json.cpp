@@ -824,13 +824,7 @@ void serializeInfo(JsonObject root)
   root[F("brand")] = F(WLED_BRAND);
   root[F("product")] = F(WLED_PRODUCT_NAME);
   root["mac"] = Network.localMAC();
-  char s[16] = "";
-  if (Network.isConnected())
-  {
-    IPAddress localIP = Network.localIP();
-    sprintf(s, "%d.%d.%d.%d", localIP[0], localIP[1], localIP[2], localIP[3]);
-  }
-  root["ip"] = s;
+  root["ip"] = Network.localIPString();
 }
 
 void setPaletteColors(JsonArray json, CRGBPalette16 palette)

@@ -17,6 +17,16 @@ IPAddress NetworkClass::localIP()
   return INADDR_NONE;
 }
 
+String NetworkClass::localIPString() {
+  char s[16] = "";
+  if (NetworkClass::isConnected())
+  {
+    IPAddress localIP = NetworkClass::localIP();
+    sprintf(s, "%d.%d.%d.%d", localIP[0], localIP[1], localIP[2], localIP[3]);
+  }
+  return s;
+}
+
 IPAddress NetworkClass::subnetMask()
 {
 #if defined(ARDUINO_ARCH_ESP32) && defined(WLED_USE_ETHERNET)
